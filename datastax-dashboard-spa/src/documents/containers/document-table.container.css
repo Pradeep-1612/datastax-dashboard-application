@@ -1,0 +1,8 @@
+.result-summary {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.result-summary p {
+  font-size: 14px;
+}
