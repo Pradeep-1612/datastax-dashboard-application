@@ -157,7 +157,7 @@ function ConfigurationsHomeContainer() {
               statusIconDescription="notification"
               subtitle="Your configuration has been saved successfully."
               timeout={3000}
-              title="Saved."
+              title="You are all set."
             />
           )}
         </Stack>

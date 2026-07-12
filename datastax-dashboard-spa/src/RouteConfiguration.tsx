@@ -7,7 +7,7 @@ import ConfigurationsBaseContainer from "./configurations/containers/configurati
 function RoutesConfiguration() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/configurations" replace />} />
+      <Route path="/" element={<Navigate to="/documents" replace />} />
       <Route path="/configurations" element={<ConfigurationsBaseContainer />} />
       <Route path="/documents" element={<DocumentsBaseContainer />}></Route>
       <Route path="/indexes" element={<IndexesBaseContainer />}></Route>
