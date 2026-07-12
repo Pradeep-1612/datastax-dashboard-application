@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import { TextInput, Button, Stack } from "@carbon/react";
+import { TextInput, Button, Stack, ToastNotification } from "@carbon/react";
 import { useState } from "react";
 import "./configurations-home.container.css";
 
@@ -10,7 +10,7 @@ interface ConfigurationFormData {
 }
 
 function ConfigurationsHomeContainer() {
-  const [saveMessage, setSaveMessage] = useState<string>("");
+  const [showToast, setShowToast] = useState<boolean>(false);
 
   const form = useForm({
     defaultValues: {
@@ -24,8 +24,7 @@ function ConfigurationsHomeContainer() {
       sessionStorage.setItem("config_headerName", value.headerName);
       sessionStorage.setItem("config_headerValue", value.headerValue);
 
-      setSaveMessage("Configuration saved successfully!");
-      setTimeout(() => setSaveMessage(""), 3000);
+      setShowToast(true);
     },
   });
 
@@ -55,7 +54,7 @@ function ConfigurationsHomeContainer() {
 
   return (
     <div style={{ maxWidth: "600px" }}>
-      <h1>Configuration settings</h1>
+      <h1>Configurations</h1>
 
       <br></br>
 
@@ -145,18 +144,21 @@ function ConfigurationsHomeContainer() {
             )}
           </form.Subscribe>
 
-          {/* Success Message */}
-          {saveMessage && (
-            <div
-              style={{
-                padding: "1rem",
-                backgroundColor: "#24a148",
-                color: "white",
-                borderRadius: "4px",
-              }}
-            >
-              {saveMessage}
-            </div>
+          {/* Success Toast Notification */}
+          {showToast && (
+            <ToastNotification
+              aria-label="closes notification"
+              caption=""
+              kind="success"
+              lowContrast
+              onClose={() => setShowToast(false)}
+              onCloseButtonClick={() => setShowToast(false)}
+              role="status"
+              statusIconDescription="notification"
+              subtitle="Your configuration has been saved successfully."
+              timeout={3000}
+              title="Saved."
+            />
           )}
         </Stack>
       </form>
