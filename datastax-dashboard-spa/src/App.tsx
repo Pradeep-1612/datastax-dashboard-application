@@ -11,7 +11,9 @@ import { useState } from "react";
 
 function App() {
   const [isWelcomeAccepted, setIsWelcomeAccepted] = useState(() => {
-    const accepted = localStorage.getItem("datastax-dashboard-welcome-accepted");
+    const accepted = localStorage.getItem(
+      "datastax-dashboard-welcome-accepted",
+    );
     return accepted === "true";
   });
 
@@ -30,7 +32,7 @@ function App() {
         <>
           <HeaderContainer />
           <SideNavContainer />
-          <main className="main-content">
+          <main className="main-content cds--content">
             <RoutesConfiguration />
             <ErrorComponent />
           </main>

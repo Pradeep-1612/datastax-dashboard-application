@@ -7,11 +7,10 @@
   width: 15%;
 }
 
+.sidenav-maincontent {
+  width: 100%;
+}
 .main-content {
-  position: fixed;
-  width: 85%;
-  top: 48px;
-  left: 15%;
   height: calc(100vh - 48px);
   background-image: linear-gradient(
     to bottom,
@@ -29,8 +28,8 @@
   background-repeat: no-repeat;
   background-position: center; */
   /* background-size: cover; */
-  opacity: 0.15;
+  opacity: 0.3;
   z-index: -1;
-  transform: scaleX(-1) rotate(184deg);
+  transform: rotate(169deg);
   background: url("./assets/creeper.png") center center / contain no-repeat;
 }
