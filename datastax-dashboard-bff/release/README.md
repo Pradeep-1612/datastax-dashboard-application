@@ -22,9 +22,9 @@ Just download the right file for your system and run it.
 ### macOS
 
 macOS will block the app the first time because it was not downloaded from the App Store.
-Follow these steps **once** to unblock it:
+Follow below steps **once** to unblock it:
 
-**Option A — Terminal (quickest, one command):**
+**Terminal (quickest, one command):**
 
 ```bash
 # Go to your Downloads folder (or wherever you saved the file)
@@ -39,16 +39,6 @@ chmod +x DataOnTheHouse-macos
 # Run it
 ./DataOnTheHouse-macos
 ```
-
-**Option B — System Settings (no terminal needed):**
-
-1. Try to open `DataOnTheHouse-macos` — macOS will block it and show a warning.
-2. Open **System Settings → Privacy & Security**.
-3. Scroll down to the **Security** section.
-4. Click **"Open Anyway"** next to the DataOnTheHouse message.
-5. Click **"Open"** on the confirmation dialog.
-
-After doing this once, the app will open normally every time.
 
 ---
 
@@ -111,9 +101,6 @@ set PORT=8080 && DataOnTheHouse-win.exe
 
 **"Port already in use" error**
 Another process is using port 3000. Either stop that process or set a different `PORT` as shown above.
-
-**macOS — app still blocked after "Open Anyway"**
-Run the `xattr` command from Option A above — it's the most reliable method.
 
 **Nothing loads in the browser**
 Make sure the terminal shows `Server running on http://localhost:3000` before opening the browser.
