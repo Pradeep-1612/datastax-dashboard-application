@@ -1,4 +1,5 @@
 import axios from 'axios';
+import https from 'https';
 import { Request, Response, Router } from 'express';
 
 interface DocumentRequestBody {
@@ -27,10 +28,15 @@ documentRouter.post('/api/documents', async (req: Request<unknown, unknown, Docu
   }
 
   try {
+    const agent = requestConfigurationDetails.url.startsWith('https')
+      ? new https.Agent({ rejectUnauthorized: false })
+      : undefined;
+
     const response = await axios.post(requestConfigurationDetails.url, requestBody, {
       headers: {
         [requestConfigurationDetails.headerName]: requestConfigurationDetails.headerValue
-      }
+      },
+      httpsAgent: agent
     });
 
     return res.status(response.status).json(response.data);
