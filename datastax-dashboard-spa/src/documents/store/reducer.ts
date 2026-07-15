@@ -8,6 +8,8 @@ export interface DocumentsState {
     fetchTime: number | null;
     searchQuery: {};
     documents: any[];
+    nextPageState: string | null;
+    pageStateHistory: string[];
     isAddDocumentRequested: boolean;
     addDocumentRequestBody: string;
     isUpdateDocumentRequested: boolean;
@@ -24,6 +26,8 @@ const initialState: DocumentsState = {
     fetchTime: null,
     searchQuery: undefined,
     documents: [],
+    nextPageState: null,
+    pageStateHistory: [],
     isAddDocumentRequested: false,
     addDocumentRequestBody: "",
     isUpdateDocumentRequested: false,
@@ -47,6 +51,20 @@ const documentsState = createSlice({
         },
         setDocuments(state, action) {
             state.documents = action.payload?.data?.documents
+            state.nextPageState = action.payload?.data?.nextPageState ?? null
+        },
+        pushPageState(state, action) {
+            // Push the current pageState onto the history stack before moving forward
+            if (action.payload) {
+                state.pageStateHistory.push(action.payload)
+            }
+        },
+        popPageState(state) {
+            state.pageStateHistory.pop()
+        },
+        resetPageStates(state) {
+            state.nextPageState = null
+            state.pageStateHistory = []
         },
         setCreatePending(state, action) {
             state.createPending = action.payload
@@ -97,6 +115,8 @@ const documentsState = createSlice({
     },
     selectors: {
         selectDocuments: (state) => state.documents,
+        selectNextPageState: (state) => state.nextPageState,
+        selectPageStateHistory: (state) => state.pageStateHistory,
         selectFetching: (state) => state.fetching,
         selectFetchTime: (state) => state.fetchTime,
         selectSearchQuery: (state) => state.searchQuery,
@@ -118,6 +138,8 @@ export const documentsReducer = documentsState.reducer;
 // Export selectors from the slice - these automatically handle the root state
 export const {
     selectDocuments,
+    selectNextPageState,
+    selectPageStateHistory,
     selectFetching,
     selectFetchTime,
     selectSearchQuery,

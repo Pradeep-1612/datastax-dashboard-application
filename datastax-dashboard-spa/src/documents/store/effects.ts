@@ -3,7 +3,7 @@ import { documentService } from "../services/document.service";
 import { documentsActions } from "./reducer";
 import { coreActions } from "../../core/store/reducer";
 
-export const fetchDocuments = (query: any) => {
+export const fetchDocuments = (query: any, pageState?: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(
             documentsActions.setSearchQuery(query)
@@ -15,7 +15,7 @@ export const fetchDocuments = (query: any) => {
         const startTime = performance.now();
 
         try {
-            const response = await documentService.getDocumentById(query);
+            const response = await documentService.getDocumentById(query, pageState);
             if (response?.data?.errors) {
                 console.error("Error fetching document ", response);
                 dispatch(

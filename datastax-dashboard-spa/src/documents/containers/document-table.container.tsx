@@ -12,14 +12,17 @@ import {
   Link,
   DataTableSkeleton,
 } from "@carbon/react";
-import { Edit, Copy, TrashCan } from "@carbon/icons-react";
+import { Edit, Copy, TrashCan, ChevronLeft, ChevronRight } from "@carbon/icons-react";
 import {
   selectDocuments,
+  selectNextPageState,
+  selectPageStateHistory,
   selectFetching,
   selectFetchTime,
   selectSearchQuery,
   documentsActions,
 } from "../store/reducer";
+import { fetchDocuments } from "../store/effects";
 import type { AppDispatch } from "../../StoreConfiguration";
 import NoItemsFound from "../../core/components/no-items-found.component";
 import UpdateDocumentComponent from "../components/update-document.component";
@@ -34,6 +37,8 @@ const DocumentTableContainer: React.FC = () => {
   const fetching = useSelector(selectFetching);
   const fetchTime = useSelector(selectFetchTime);
   const searchQuery = useSelector(selectSearchQuery);
+  const nextPageState = useSelector(selectNextPageState);
+  const pageStateHistory = useSelector(selectPageStateHistory);
 
   // Track which document was copied
   const [copiedDocumentId, setCopiedDocumentId] = useState(null);
@@ -69,6 +74,22 @@ const DocumentTableContainer: React.FC = () => {
   const handleDelete = (documentId: string, document: any) => {
     console.log("Delete document:", documentId);
     dispatch(documentsActions.deleteDocumentRequested(document));
+  };
+
+  const handleNextPage = () => {
+    if (!nextPageState) return;
+    dispatch(documentsActions.pushPageState(nextPageState));
+    dispatch(fetchDocuments(searchQuery, nextPageState));
+  };
+
+  const handlePreviousPage = () => {
+    if (pageStateHistory.length === 0) return;
+    // Second-to-last entry is the pageState for the previous page (undefined = first page)
+    const prevPageState: string | undefined = pageStateHistory.length >= 2
+      ? pageStateHistory[pageStateHistory.length - 2]
+      : undefined;
+    dispatch(documentsActions.popPageState());
+    dispatch(fetchDocuments(searchQuery, prevPageState));
   };
 
   // Show message if no documents after fetching
@@ -119,15 +140,14 @@ const DocumentTableContainer: React.FC = () => {
     <>
       <div className="result-summary">
         <p>
-          {documents.length} {documents.length === 1 ? 'result' : 'results'} found
-          {fetchTime !== null && (
-            <span> in {(fetchTime / 1000).toFixed(2)} s</span>
-          )}
-          .
+          Displaying {documents.length} {documents.length === 1 ? 'result' : 'results'}
         </p>
+        {fetchTime !== null && (
+          <span className="result-summary__fetch-time">Fetched in {(fetchTime / 1000).toFixed(2)}s</span>
+        )}
       </div>
       <TableContainer
-        style={{ height: "calc(100vh - 290px)", overflow: "auto" }}
+        style={{ height: "calc(100vh - 350px)", overflow: "auto" }}
       >
         <Table>
           <TableHead>
@@ -145,7 +165,7 @@ const DocumentTableContainer: React.FC = () => {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <div style={{ display: "flex", gap: "8px" }}>
+                  <div className="table-actions">
                     <Button
                       kind="ghost"
                       size="sm"
@@ -179,6 +199,34 @@ const DocumentTableContainer: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Pagination */}
+      <div className="pagination">
+        <span className="pagination__page-label">
+          Page {pageStateHistory.length + 1}
+        </span>
+        <div className="pagination__buttons">
+          <Button
+            kind="ghost"
+            size="sm"
+            renderIcon={ChevronLeft}
+            disabled={pageStateHistory.length === 0}
+            onClick={handlePreviousPage}
+            className="pagination__btn--prev"
+          >
+            Previous page
+          </Button>
+          <Button
+            kind="ghost"
+            size="sm"
+            renderIcon={ChevronRight}
+            disabled={!nextPageState}
+            onClick={handleNextPage}
+          >
+            Next page
+          </Button>
+        </div>
+      </div>
 
       {/* Update Document Modal */}
       <UpdateDocumentComponent />

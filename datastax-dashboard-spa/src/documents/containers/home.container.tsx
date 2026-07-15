@@ -85,6 +85,7 @@ function HomeContainer() {
       dispatch(documentsActions.setSearchQuery(undefined));
       return;
     }
+    dispatch(documentsActions.resetPageStates());
     dispatch(fetchDocuments(queryValue));
   }
 

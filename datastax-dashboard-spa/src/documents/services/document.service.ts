@@ -31,14 +31,18 @@ const wrapRequestBody = (requestBody: any) => {
 };
 
 export const documentService = {
-    getDocumentById(query: any) {
-        const requestBody = {
+    getDocumentById(query: any, pageState?: string) {
+        const requestBody: any = {
             find: {
                 filter: {
                     ...query
                 }
             }
         };
+
+        if (pageState) {
+            requestBody.find.options = { pageState };
+        }
 
         return documentServiceClient.post("", wrapRequestBody(requestBody));
     },
