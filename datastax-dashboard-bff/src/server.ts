@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import documentRouter from './documents/DocumentRoutes';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { version, releaseDate } = require('../package.json') as { version: string; releaseDate?: string };
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -40,6 +42,7 @@ app.use('/DataOnTheHouse', (_req: Request, res: Response) => {
 
 app.listen(port, () => {
   console.log(`🚀 Application Backend server running on http://localhost:${port}`);
+  console.log(`📦 Version: ${version}${releaseDate ? `  |  Released: ${releaseDate}` : ''}`);
   // console.log(`Serving React app from: ${reactPath}`);
   console.log(`\n\n🌐 Open application at: http://localhost:${port}/DataOnTheHouse`);
 });

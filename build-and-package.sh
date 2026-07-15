@@ -10,6 +10,20 @@ echo "DataStax Dashboard Build & Package"
 echo "======================================"
 echo ""
 
+# Stamp release date into package.json before building
+RELEASE_DATE=$(date -u +"%Y-%m-%d")
+echo "Stamping release date: $RELEASE_DATE"
+cd datastax-dashboard-bff
+# Use node to safely update the JSON field
+node -e "
+const fs = require('fs');
+const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+pkg.releaseDate = '$RELEASE_DATE';
+fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+"
+cd ..
+echo ""
+
 # Step 1: Build React SPA
 echo "Step 1: Building React SPA..."
 cd datastax-dashboard-spa

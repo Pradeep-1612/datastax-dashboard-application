@@ -42,5 +42,6 @@
       "node18-linux-x64"
     ],
     "outputPath": "release"
-  }
+  },
+  "releaseDate": "2026-07-15"
 }
