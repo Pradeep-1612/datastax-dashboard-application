@@ -1,6 +1,6 @@
 {
   "name": "datastax-dashboard-bff",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "TypeScript Express BFF for DataStax dashboard",
   "main": "dist/server.js",
   "bin": "dist/server.js",
@@ -43,5 +43,5 @@
     ],
     "outputPath": "release"
   },
-  "releaseDate": "2026-07-15"
+  "releaseDate": "2026-07-20"
 }

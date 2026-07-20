@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import DocumentsBaseContainer from "./documents/containers/documents-base.container";
 import IndexesBaseContainer from "./indexes/containers/indexes-base.container";
-import QueryFiltersBaseContainer from "./query-filters/containers/query-filters-base.container";
 import ConfigurationsBaseContainer from "./configurations/containers/configurations-base.container";
+import ManageDataBaseContainer from "./manage-data/containers/manage-data-base.container";
 
 function RoutesConfiguration() {
   return (
@@ -12,8 +12,8 @@ function RoutesConfiguration() {
       <Route path="/documents" element={<DocumentsBaseContainer />}></Route>
       <Route path="/indexes" element={<IndexesBaseContainer />}></Route>
       <Route
-        path="/query-filters"
-        element={<QueryFiltersBaseContainer />}
+        path="/manage-data"
+        element={<ManageDataBaseContainer />}
       ></Route>
     </Routes>
   );

@@ -60,14 +60,13 @@ export const documentService = {
     updateDocument(id: string, body: any): any {
         // Create the request body with the required structure
         const requestBody = {
-            updateOne: {
+            findOneAndReplace: {
                 filter: {
                     _id: id,
                 },
-                update: {
-                    $set: {
-                        ...body,
-                    },
+                replacement: {
+                     _id: id,
+                    ...body,
                 },
             },
         };
