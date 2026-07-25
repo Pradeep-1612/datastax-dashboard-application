@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { documentsReducer } from "../src/documents/store/reducer";
 import { coreReducer } from "./core/store/reducer";
+import { manageDataReducer } from "./manage-data/store/reducer";
 
 const store = configureStore({
   reducer: {
     documents: documentsReducer,
-    core: coreReducer
+    core: coreReducer,
+    manageData: manageDataReducer
   },
 });
 

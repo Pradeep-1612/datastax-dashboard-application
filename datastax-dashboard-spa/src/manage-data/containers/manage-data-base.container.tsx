@@ -1,9 +1,16 @@
+import { useSelector } from "react-redux";
+import QueryInputComponent from "../components/query-input.component";
+import QueryOutputComponent from "../components/query-output.component";
+import { selectQueryResult } from "../store/reducer";
+
 function ManageDataBaseContainer() {
+  const queryResult = useSelector(selectQueryResult);
+
   return (
-    <div className="query-filters-base">
-      <h1>Manage data</h1>
-      <br />
-      <p>We'll evaluate this feature as priorities align.</p>
+    <div className="manage-data-base">
+      <QueryInputComponent />
+      <br></br>
+      {queryResult && <QueryOutputComponent />}
     </div>
   );
 }

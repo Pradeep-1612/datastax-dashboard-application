@@ -34,11 +34,11 @@ function SideNavContainer() {
             Documents
           </SideNavLink>
           <SideNavLink
-            href="/manage-data"
-            isActive={location.pathname === "/manage-data"}
-            onClick={handleNavigation("/manage-data")}
+            href="/query-editor"
+            isActive={location.pathname === "/query-editor"}
+            onClick={handleNavigation("/query-editor")}
           >
-            Manage data
+            Query editor
           </SideNavLink>
           <SideNavLink
             href="/indexes"

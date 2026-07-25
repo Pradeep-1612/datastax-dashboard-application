@@ -99,7 +99,7 @@ const UpdateDocumentComponent: React.FC = () => {
     >
       <div className="field-wrapper">
         <span className="label">JSON Content</span>
-        <div className={jsonError ?? "editor-border--error"}>
+        <div className={jsonError && "editor-border--error"}>
           <Editor
             height="400px"
             defaultLanguage="json"

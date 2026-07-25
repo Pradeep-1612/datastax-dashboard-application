@@ -12,7 +12,7 @@ function RoutesConfiguration() {
       <Route path="/documents" element={<DocumentsBaseContainer />}></Route>
       <Route path="/indexes" element={<IndexesBaseContainer />}></Route>
       <Route
-        path="/manage-data"
+        path="/query-editor"
         element={<ManageDataBaseContainer />}
       ></Route>
     </Routes>
