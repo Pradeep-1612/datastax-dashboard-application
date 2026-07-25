@@ -119,6 +119,7 @@ function ConfigurationsHomeContainer() {
               {(field) => (
                 <TextInput
                   id="headerValue"
+                  type="password"
                   labelText="Header value"
                   placeholder="e.g., Bearer token123"
                   value={field.state.value}

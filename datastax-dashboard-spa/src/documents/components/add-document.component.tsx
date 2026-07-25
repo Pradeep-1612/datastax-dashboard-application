@@ -1,24 +1,40 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Editor from "@monaco-editor/react";
+import { Modal } from "@carbon/react";
+import "../../assets/styles/common-styles.css";
 import {
-  Modal,
-  TextArea,
-} from "@carbon/react";
+  defaultEditorOptions,
+  MONACO_THEME,
+} from "../../utilities/monaco-theme";
 import {
   documentsActions,
   selectCreatePending,
   selectIsAddDocumentRequested,
-  selectAddDocumentRequestBody
+  selectAddDocumentRequestBody,
 } from "../store/reducer";
 import { addDocument } from "../store/effects";
 import type { AppDispatch } from "../../StoreConfiguration";
+
+const formattedJsonPlaceholder = `${JSON.stringify(
+  {
+    _id: "your-id",
+    name: "your-name",
+    age: 20,
+    active: true,
+    another_field: "another_value",
+    message: "Replace these example values with your own data",
+  },
+  null,
+  2,
+)}`;
 
 const AddDocumentComponent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isCreatePending = useSelector(selectCreatePending);
   const isAddDocumentRequested = useSelector(selectIsAddDocumentRequested);
   const jsonContent = useSelector(selectAddDocumentRequestBody);
-  
+
   const [jsonError, setJsonError] = useState("");
 
   // Validate JSON and check for _id field
@@ -30,7 +46,7 @@ const AddDocumentComponent: React.FC = () => {
 
     try {
       const parsed = JSON.parse(jsonString);
-      
+
       // Check if _id field exists
       if (!parsed._id) {
         setJsonError("JSON must contain an '_id' field");
@@ -39,7 +55,7 @@ const AddDocumentComponent: React.FC = () => {
 
       setJsonError("");
       return true;
-    } catch (error) {
+    } catch {
       setJsonError("Invalid JSON format");
       return false;
     }
@@ -50,12 +66,11 @@ const AddDocumentComponent: React.FC = () => {
     const isJsonValid = validateJson(jsonContent);
 
     if (!isJsonValid) {
-        console.log("Invalid ID or JSON");
+      console.log("Invalid ID or JSON");
       return;
     }
 
     try {
-
       // Parse the JSON content
       const parsedJson = JSON.parse(jsonContent);
 
@@ -77,10 +92,11 @@ const AddDocumentComponent: React.FC = () => {
   };
 
   // Handle JSON content change
-  const handleJsonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(documentsActions.setAddDocumentRequestBody(e.target.value));
+  const handleJsonChange = (value: string | undefined) => {
+    const newValue = value ?? "";
+    dispatch(documentsActions.setAddDocumentRequestBody(newValue));
     if (jsonError) {
-      validateJson(e.target.value);
+      validateJson(newValue);
     }
   };
 
@@ -96,24 +112,26 @@ const AddDocumentComponent: React.FC = () => {
       primaryButtonDisabled={isCreatePending}
       size="md"
     >
-
-      <div style={{ marginBottom: "1rem" }}>
-        <TextArea
-          id="json-content"
-          labelText="JSON Content"
-          placeholder={`Enter JSON with _id field, e.g.:\n{\n  "_id": "ssauth_ssuser_SCI00818964",\n  "_collection": "ssuser"\n}`}
-          value={jsonContent}
-          onChange={handleJsonChange}
-          invalid={!!jsonError}
-          invalidText={jsonError}
-          rows={20}
-          disabled={isCreatePending}
-        />
+      <div className="field-wrapper">
+        <span className="label">JSON Content</span>
+        <div className={jsonError ?? "editor-border--error"}>
+          <Editor
+            height="400px"
+            defaultLanguage="json"
+            theme={MONACO_THEME}
+            defaultValue={formattedJsonPlaceholder}
+            value={jsonContent}
+            onChange={handleJsonChange}
+            options={{
+              ...defaultEditorOptions,
+              readOnly: isCreatePending,
+            }}
+          />
+        </div>
+        {jsonError && <span className="text-error">{jsonError}</span>}
       </div>
     </Modal>
   );
 };
 
 export default AddDocumentComponent;
-
-// Made with Bob

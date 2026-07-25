@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, TextArea } from "@carbon/react";
+import Editor from "@monaco-editor/react";
+import { Modal } from "@carbon/react";
+import "../../assets/styles/common-styles.css";
+import {
+  defaultEditorOptions,
+  MONACO_THEME,
+} from "../../utilities/monaco-theme";
 import {
   documentsActions,
   selectUpdatePending,
   selectIsUpdateDocumentRequested,
   selectSelectedDocument,
-  selectUpdateDocumentRequestBody
+  selectUpdateDocumentRequestBody,
 } from "../store/reducer";
 import { updateDocument } from "../store/effects";
 import type { AppDispatch } from "../../StoreConfiguration";
@@ -14,10 +20,12 @@ import type { AppDispatch } from "../../StoreConfiguration";
 const UpdateDocumentComponent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isUpdatePending = useSelector(selectUpdatePending);
-  const isUpdateDocumentRequested = useSelector(selectIsUpdateDocumentRequested);
+  const isUpdateDocumentRequested = useSelector(
+    selectIsUpdateDocumentRequested,
+  );
   const selectedDocument = useSelector(selectSelectedDocument);
   const jsonContent = useSelector(selectUpdateDocumentRequestBody);
-  
+
   const [jsonError, setJsonError] = useState("");
 
   // Validate JSON format only
@@ -31,7 +39,7 @@ const UpdateDocumentComponent: React.FC = () => {
       JSON.parse(jsonString);
       setJsonError("");
       return true;
-    } catch (error) {
+    } catch {
       setJsonError("Invalid JSON format");
       return false;
     }
@@ -68,10 +76,11 @@ const UpdateDocumentComponent: React.FC = () => {
   };
 
   // Handle JSON content change
-  const handleJsonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(documentsActions.setUpdateDocumentRequestBody(e.target.value));
+  const handleJsonChange = (value: string | undefined) => {
+    const newValue = value ?? "";
+    dispatch(documentsActions.setUpdateDocumentRequestBody(newValue));
     if (jsonError) {
-      validateJson(e.target.value);
+      validateJson(newValue);
     }
   };
 
@@ -88,23 +97,25 @@ const UpdateDocumentComponent: React.FC = () => {
       primaryButtonDisabled={isUpdatePending}
       size="md"
     >
-      <div style={{ marginBottom: "1rem" }}>
-        <TextArea
-          id="json-content"
-          labelText="JSON Content"
-          placeholder={`Enter JSON content, e.g.:\n{\n  "_collection": "ssuser",\n  "name": "Pradeep J"\n}`}
-          value={jsonContent}
-          onChange={handleJsonChange}
-          invalid={!!jsonError}
-          invalidText={jsonError}
-          rows={20}
-          disabled={isUpdatePending}
-        />
+      <div className="field-wrapper">
+        <span className="label">JSON Content</span>
+        <div className={jsonError ?? "editor-border--error"}>
+          <Editor
+            height="400px"
+            defaultLanguage="json"
+            theme={MONACO_THEME}
+            value={jsonContent}
+            onChange={handleJsonChange}
+            options={{
+              ...defaultEditorOptions,
+              readOnly: isUpdatePending,
+            }}
+          />
+        </div>
+        {jsonError && <span className="text-error">{jsonError}</span>}
       </div>
     </Modal>
   );
 };
 
 export default UpdateDocumentComponent;
-
-// Made with Bob

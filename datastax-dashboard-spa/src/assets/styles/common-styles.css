@@ -1,0 +1,87 @@
+/* ─── Layout ─────────────────────────────────────────────── */
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gap-8 {
+  gap: 8px;
+}
+
+.gap-16 {
+  gap: 16px;
+}
+
+.gap-24 {
+  gap: 24px;
+}
+
+/* ─── Spacing ────────────────────────────────────────────── */
+
+.mb-4  { margin-bottom: 4px; }
+.mb-8  { margin-bottom: 8px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+
+.mt-4  { margin-top: 4px; }
+.mt-8  { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+
+/* ─── Typography ─────────────────────────────────────────── */
+
+.label {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.32px;
+  color: #525252;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.text-muted {
+  font-size: 12px;
+  color: #57606a;
+}
+
+.text-error {
+  font-size: 12px;
+  color: #da1e28;
+  margin-top: 4px;
+  display: block;
+}
+
+/* ─── Form ───────────────────────────────────────────────── */
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.editor-border {
+  border: 1px solid #8d8d8d;
+  border-radius: 0;
+}
+
+.editor-border--error {
+  border: 1px solid #da1e28;
+  border-radius: 0;
+}

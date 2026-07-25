@@ -8,6 +8,10 @@ import { Provider } from "react-redux";
 import store from "./StoreConfiguration";
 import ErrorComponent from "./core/components/error.component";
 import { useState } from "react";
+import { loader } from "@monaco-editor/react";
+import { monacoBeforeMount } from "./utilities/monaco-theme";
+
+loader.init().then(monacoBeforeMount);
 
 function App() {
   const [isWelcomeAccepted, setIsWelcomeAccepted] = useState(() => {

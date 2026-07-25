@@ -1,6 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Modal, TextArea } from "@carbon/react";
+import Editor from "@monaco-editor/react";
+import { Modal } from "@carbon/react";
+import { defaultEditorOptions, MONACO_THEME } from "../../utilities/monaco-theme";
 import {
   documentsActions,
   selectDeletePending,
@@ -19,7 +21,7 @@ const DeleteDocumentComponent: React.FC = () => {
   // Get document content without _id field for display
   const getDocumentContent = () => {
     if (!selectedDocument) return "";
-    const { _id, ...dataWithoutId } = selectedDocument;
+    const { _id, ...dataWithoutId } = selectedDocument; // eslint-disable-line @typescript-eslint/no-unused-vars
     return JSON.stringify(dataWithoutId, null, 2);
   };
 
@@ -53,19 +55,22 @@ const DeleteDocumentComponent: React.FC = () => {
       onSecondarySubmit={handleClose}
       primaryButtonDisabled={isDeletePending}
       danger
-      size="sm"
+      size="md"
     >
       <p style={{ marginBottom: "1rem" }}>
         Are you sure you want to delete this document? This action cannot be
         undone.
       </p>
       <div style={{ marginBottom: "1rem" }}>
-        <TextArea
-          id="document-content"
-          labelText="Document Content"
+        <Editor
+          height="400px"
+          defaultLanguage="json"
+          theme={MONACO_THEME}
           value={getDocumentContent()}
-          rows={20}
-          readOnly={true}
+          options={{
+            ...defaultEditorOptions,
+            readOnly: true,
+          }}
         />
       </div>
     </Modal>
@@ -73,5 +78,3 @@ const DeleteDocumentComponent: React.FC = () => {
 };
 
 export default DeleteDocumentComponent;
-
-// Made with Bob
