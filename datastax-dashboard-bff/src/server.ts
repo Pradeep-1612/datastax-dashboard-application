@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+import fs from "fs";
 import documentRouter from './documents/DocumentRoutes';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { version, releaseDate } = require('../package.json') as { version: string; releaseDate?: string };
@@ -40,9 +41,11 @@ app.use('/DataOnTheHouse', (_req: Request, res: Response) => {
   res.sendFile(path.join(reactPath, 'index.html'));
 });
 
+const banner = fs.readFileSync(path.join(__dirname, 'assets', 'banner.txt'), "utf8");
+
 app.listen(port, () => {
-  console.log(`🚀 Application Backend server running on http://localhost:${port}`);
-  console.log(`📦 Version: ${version}${releaseDate ? `  |  Released: ${releaseDate}` : ''}`);
-  // console.log(`Serving React app from: ${reactPath}`);
+  console.log(banner);
+  // console.log(`🚀 Application Backend server running on http://localhost:${port}`);
+  console.log(`\n📦 Version: ${version}${releaseDate ? `  |  Released: ${releaseDate}` : ''}`);
   console.log(`\n\n🌐 Open application at: http://localhost:${port}/DataOnTheHouse`);
 });

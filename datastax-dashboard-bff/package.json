@@ -1,12 +1,12 @@
 {
   "name": "datastax-dashboard-bff",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "TypeScript Express BFF for DataStax dashboard",
   "main": "dist/server.js",
   "bin": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
+    "build": "tsc && cp -r src/assets/ dist/assets",
     "build:spa": "cd ../datastax-dashboard-spa && npm run build",
     "build:all": "npm run build:spa && npm run build",
     "start": "node dist/server.js",
@@ -34,7 +34,8 @@
   },
   "pkg": {
     "assets": [
-      "../datastax-dashboard-spa/dist/**/*"
+      "../datastax-dashboard-spa/dist/**/*",
+      "dist/assets/**/*"
     ],
     "targets": [
       "node18-win-x64",
@@ -43,5 +44,5 @@
     ],
     "outputPath": "release"
   },
-  "releaseDate": "2026-07-22"
+  "releaseDate": "2026-07-26"
 }
