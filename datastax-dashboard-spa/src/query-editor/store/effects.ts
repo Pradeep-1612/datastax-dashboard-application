@@ -1,18 +1,18 @@
 import { coreActions } from "../../core/store/reducer";
 import type { AppDispatch } from "../../StoreConfiguration"
-import { manageDataService } from "../services/manage-data.service";
-import { manageDataActions } from "./reducer"
+import { queryEditorService } from "../services/query-editor.service";
+import { queryEditorActions } from "./reducer"
 
 export const executeQuery = (query: any) => {
     return async (dispatch: AppDispatch) => {
 
-        dispatch(manageDataActions.setQueryExecutionDetails({ queryExecuting: true }));
+        dispatch(queryEditorActions.setQueryExecutionDetails({ queryExecuting: true }));
         const startTime = performance.now();
         try {
-            const result = await manageDataService.executeQuery(query);
+            const result = await queryEditorService.executeQuery(query);
             const endTime = performance.now();
             const fetchTime = endTime - startTime;
-            dispatch(manageDataActions.setQueryExecutionDetails({
+            dispatch(queryEditorActions.setQueryExecutionDetails({
                 queryExecuting: false,
                 queryExecutionTime: fetchTime,
                 queryResult: result.data
@@ -20,7 +20,7 @@ export const executeQuery = (query: any) => {
         }
         catch (error) {
             console.log(error);
-            dispatch(manageDataActions.setQueryExecutionDetails({ queryExecuting: false }));
+            dispatch(queryEditorActions.setQueryExecutionDetails({ queryExecuting: false }));
             dispatch(
                 coreActions.setErrorDetails({
                     messageId: "SOMETHING_WENT_WRONG",

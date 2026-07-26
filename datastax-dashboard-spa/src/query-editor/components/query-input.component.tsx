@@ -7,7 +7,7 @@ import { Editor } from "@monaco-editor/react";
 import { Button, ButtonSkeleton } from "@carbon/react";
 import { PlayFilledAlt } from "@carbon/icons-react";
 import { useDispatch, useSelector } from "react-redux";
-import { manageDataActions, selectQueryExecuting, selectQueryInput } from "../store/reducer";
+import { queryEditorActions, selectQueryExecuting, selectQueryInput } from "../store/reducer";
 import { executeQuery } from "../store/effects";
 import type { AppDispatch } from "../../StoreConfiguration";
 
@@ -38,7 +38,7 @@ const QueryInputComponent: React.FC = () => {
   // Handle JSON content change
   const handleJsonChange = (value: string | undefined) => {
     const newValue = value ?? "";
-    dispatch(manageDataActions.setQueryInput(newValue));
+    dispatch(queryEditorActions.setQueryInput(newValue));
     if (jsonError) {
       validateJson(newValue);
     }

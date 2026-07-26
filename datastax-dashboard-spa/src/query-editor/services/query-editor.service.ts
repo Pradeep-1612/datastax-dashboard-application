@@ -1,6 +1,6 @@
 import { createHttpClient } from "../../core/services/create-http-client.service";
 
-const manageDataServiceClient = createHttpClient("/api/documents", undefined);
+const queryEditorServiceClient = createHttpClient("/api/documents", undefined);
 
 
 // Helper function to get configuration from sessionStorage
@@ -30,8 +30,8 @@ const wrapRequestBody = (requestBody: any) => {
     };
 };
 
-export const manageDataService = {
+export const queryEditorService = {
     executeQuery(query: any) {
-        return manageDataServiceClient.post("", wrapRequestBody(query));
+        return queryEditorServiceClient.post("", wrapRequestBody(query));
     }
 }

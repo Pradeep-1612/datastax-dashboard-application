@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import DocumentsBaseContainer from "./documents/containers/documents-base.container";
 import IndexesBaseContainer from "./indexes/containers/indexes-base.container";
 import ConfigurationsBaseContainer from "./configurations/containers/configurations-base.container";
-import ManageDataBaseContainer from "./manage-data/containers/manage-data-base.container";
+import QueryEditorBaseContainer from "./query-editor/containers/query-editor-base.container";
 
 function RoutesConfiguration() {
   return (
@@ -13,7 +13,7 @@ function RoutesConfiguration() {
       <Route path="/indexes" element={<IndexesBaseContainer />}></Route>
       <Route
         path="/query-editor"
-        element={<ManageDataBaseContainer />}
+        element={<QueryEditorBaseContainer />}
       ></Route>
     </Routes>
   );

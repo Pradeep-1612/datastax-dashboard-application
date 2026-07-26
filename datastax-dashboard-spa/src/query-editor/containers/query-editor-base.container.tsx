@@ -3,15 +3,15 @@ import QueryInputComponent from "../components/query-input.component";
 import QueryOutputComponent from "../components/query-output.component";
 import { selectQueryResult } from "../store/reducer";
 
-function ManageDataBaseContainer() {
+function QueryEditorBaseContainer() {
   const queryResult = useSelector(selectQueryResult);
 
   return (
-    <div className="manage-data-base">
+    <div className="query-editor-base">
       <QueryInputComponent />
       <br></br>
       {queryResult && <QueryOutputComponent />}
     </div>
   );
 }
-export default ManageDataBaseContainer;
+export default QueryEditorBaseContainer;

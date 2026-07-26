@@ -1,22 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface ManageDataState {
+export interface QueryEditorState {
     queryExecuting: boolean;
     queryExecutionTime: number | null;
     queryResult: any;
     queryInput: string;
 }
 
-const initialState: ManageDataState = {
+const initialState: QueryEditorState = {
     queryExecuting: false,
     queryExecutionTime: null,
     queryResult: undefined,
     queryInput: "",
 }
 
-const manageDataState = createSlice({
+const queryEditorState = createSlice({
 
-    name: "manageData",
+    name: "queryEditor",
     initialState,
     reducers: {
         setQueryExecutionDetails(state, action) {
@@ -38,7 +38,7 @@ const manageDataState = createSlice({
     }
 });
 
-export const manageDataActions = manageDataState.actions;
-export const manageDataReducer = manageDataState.reducer;
+export const queryEditorActions = queryEditorState.actions;
+export const queryEditorReducer = queryEditorState.reducer;
 
-export const { selectQueryExecuting, selectQueryExecutionTime, selectQueryResult, selectQueryInput } = manageDataState.selectors;
+export const { selectQueryExecuting, selectQueryExecutionTime, selectQueryResult, selectQueryInput } = queryEditorState.selectors;
