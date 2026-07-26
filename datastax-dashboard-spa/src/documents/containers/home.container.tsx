@@ -1,4 +1,4 @@
-import { Button, Callout, Link, Search, TextInput } from "@carbon/react";
+import { Button, Search, TextInput } from "@carbon/react";
 import "./home.container.css";
 import { fetchDocuments } from "../store/effects";
 import { useDispatch } from "react-redux";
@@ -7,13 +7,11 @@ import DocumentTableContainer from "./document-table.container";
 import { useState } from "react";
 import AddDocumentComponent from "../components/add-document.component";
 import { documentsActions } from "../store/reducer";
-import { useNavigate } from "react-router-dom";
 
 function HomeContainer() {
   const dispatch = useDispatch<AppDispatch>();
   const [searchValue, setSearchValue] = useState("");
   const [quickLookupValue, setQuickLookupValue] = useState("");
-  const navigate = useNavigate();
   const isConfigured = !!sessionStorage.getItem('config_url');
 
   function onSearch(event: any) {
@@ -93,11 +91,6 @@ function HomeContainer() {
     handleGoClickWithValues(searchValue, quickLookupValue);
   }
 
-  const handleNavigation = (path: string) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate(path);
-  };
-
   return (
     <>
       <div className="header-div">
@@ -112,21 +105,7 @@ function HomeContainer() {
           Add document
         </Button>
       </div>
-      {!isConfigured && (
-        <Callout
-          title="Action required"
-          titleId="my fancy id 123"
-          kind="warning"
-          lowContrast
-        >
-          <div className="cds--inline-notification__subtitle">
-            No database endpoint has been configured. {" "}
-            <Link onClick={handleNavigation("/configurations")}>
-               Configure now.
-            </Link>
-          </div>
-        </Callout>
-      )}
+
       <div className="action-layout">
         <Search
           className="search-bar"

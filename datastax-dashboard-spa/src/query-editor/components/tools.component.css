@@ -1,0 +1,5 @@
+.cds--accordion__content {
+    padding-inline-end: unset;
+    max-height: 500px;
+    overflow-y: auto;
+}

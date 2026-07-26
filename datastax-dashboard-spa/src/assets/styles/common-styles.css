@@ -91,6 +91,13 @@
 }
 
 
+.bl-light--success {
+  border-left: 2px solid #19803880;
+}
+
+.bl-light--error {
+  border-left: 2px solid #ffb3b8;
+}
 
 .bs-light {
   box-shadow: 0 1px 4px #0000001a;

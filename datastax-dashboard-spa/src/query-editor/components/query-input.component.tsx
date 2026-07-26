@@ -1,20 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   defaultEditorOptions,
   MONACO_THEME,
 } from "../../utilities/monaco-theme";
 import { Editor } from "@monaco-editor/react";
-import { Button, ButtonSkeleton } from "@carbon/react";
-import { PlayFilledAlt } from "@carbon/icons-react";
+import { Button, InlineLoading } from "@carbon/react";
+import { PlayFilledAlt, StopFilledAlt } from "@carbon/icons-react";
 import { useDispatch, useSelector } from "react-redux";
-import { queryEditorActions, selectQueryExecuting, selectQueryInput } from "../store/reducer";
+import {
+  queryEditorActions,
+  selectQueryExecuting,
+  selectQueryInput,
+} from "../store/reducer";
 import { executeQuery } from "../store/effects";
 import type { AppDispatch } from "../../StoreConfiguration";
 
 const QueryInputComponent: React.FC = () => {
+  const isConfigured = !!sessionStorage.getItem("config_url");
   const dispatch = useDispatch<AppDispatch>();
   const isQueryRunning = useSelector(selectQueryExecuting);
   const jsonContent = useSelector(selectQueryInput);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const [jsonError, setJsonError] = useState("");
 
@@ -55,14 +61,21 @@ const QueryInputComponent: React.FC = () => {
 
     try {
       const parsedJson = JSON.parse(jsonContent);
-      dispatch(executeQuery(parsedJson));
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+      dispatch(executeQuery(parsedJson, controller.signal));
     } catch (error) {
       console.error("Error executing query:", error);
       setJsonError("Failed to execute query. Please try again.");
     }
   };
+
+  const handleCancel = () => {
+    abortControllerRef.current?.abort();
+    abortControllerRef.current = null;
+  };
   return (
-    <>
+    <div>
       <h6>Query editor</h6>
       <br></br>
       <div className={jsonError && "editor-border--error"}>
@@ -75,28 +88,44 @@ const QueryInputComponent: React.FC = () => {
           onChange={handleJsonChange}
           options={{
             ...defaultEditorOptions,
-            readOnly: isQueryRunning,
+            readOnly: !isConfigured || isQueryRunning,
           }}
         />
       </div>
       {jsonError && <span className="text-error">{jsonError}</span>}
       <br></br>
-      <div className="flex">
-        {isQueryRunning ? (
-          <ButtonSkeleton className="ml-auto" />
-        ) : (
+      {isQueryRunning ? (
+        <div className="flex-between">
+          <InlineLoading
+            aria-live="assertive"
+            description="Executing"
+            iconDescription="Executing..."
+            status="active"
+          />
+          <Button
+            kind="danger--tertiary"
+            onClick={handleCancel}
+            renderIcon={StopFilledAlt}
+            size="sm"
+            disabled={!isConfigured}
+          >
+            Cancel
+          </Button>
+        </div>
+      ) : (
+        <div className="flex">
           <Button
             className="ml-auto"
             onClick={handleSearch}
             renderIcon={PlayFilledAlt}
             size="sm"
-            disabled={isQueryRunning}
+            disabled={!isConfigured}
           >
             Execute
           </Button>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 };
 

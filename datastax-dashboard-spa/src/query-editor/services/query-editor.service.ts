@@ -31,7 +31,7 @@ const wrapRequestBody = (requestBody: any) => {
 };
 
 export const queryEditorService = {
-    executeQuery(query: any) {
-        return queryEditorServiceClient.post("", wrapRequestBody(query));
+    executeQuery(query: any, signal?: AbortSignal) {
+        return queryEditorServiceClient.post("", wrapRequestBody(query), { signal });
     }
 }

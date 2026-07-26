@@ -1,0 +1,41 @@
+.query-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.query-history-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.query-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.query-history-timestamp {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cds-text-primary, #161616);
+}
+
+.query-history-note {
+  font-size: 0.75rem;
+  color: var(--cds-text-helper, #6f6f6f);
+  font-style: italic;
+}
+
+.query-history-execution-time {
+  font-size: 0.75rem;
+  color: var(--cds-text-helper, #6f6f6f);
+}
+
+.query-history-empty {
+  font-size: 0.875rem;
+  color: var(--cds-text-helper, #6f6f6f);
+  margin: 0;
+}

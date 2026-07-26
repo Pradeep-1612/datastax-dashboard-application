@@ -41,4 +41,8 @@ const queryEditorState = createSlice({
 export const queryEditorActions = queryEditorState.actions;
 export const queryEditorReducer = queryEditorState.reducer;
 
-export const { selectQueryExecuting, selectQueryExecutionTime, selectQueryResult, selectQueryInput } = queryEditorState.selectors;
+export const {
+    selectQueryExecuting,
+    selectQueryExecutionTime,
+    selectQueryResult,
+    selectQueryInput} = queryEditorState.selectors;

@@ -1,0 +1,21 @@
+.usage-examples-list {
+  margin-top: 16px;
+}
+
+.usage-example-item {
+  margin-bottom: 20px;
+  border-left: 3px solid #e8e8e8;
+  padding-left: 12px;
+}
+
+.usage-example-title {
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.usage-example-description {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #525252;
+}

@@ -10,6 +10,8 @@ import ErrorComponent from "./core/components/error.component";
 import { useState } from "react";
 import { loader } from "@monaco-editor/react";
 import { monacoBeforeMount } from "./utilities/monaco-theme";
+import { Callout, Link } from "@carbon/react";
+import { useNavigate } from "react-router-dom";
 
 loader.init().then(monacoBeforeMount);
 
@@ -20,9 +22,17 @@ function App() {
     );
     return accepted === "true";
   });
+  const navigate = useNavigate();
+
+  const isConfigured = !!sessionStorage.getItem("config_url");
 
   const handleWelcomeAccept = () => {
     setIsWelcomeAccepted(true);
+  };
+
+  const handleNavigation = (path: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(path);
   };
 
   return (
@@ -37,6 +47,24 @@ function App() {
           <HeaderContainer />
           <SideNavContainer />
           <main className="main-content cds--content">
+            {!isConfigured && (
+              <>
+                <Callout
+                  title="Action required"
+                  titleId="my fancy id 123"
+                  kind="warning"
+                  lowContrast
+                >
+                  <div className="cds--inline-notification__subtitle">
+                    No database endpoint has been configured.
+                    <Link onClick={handleNavigation("/configurations")}>
+                      Configure now.
+                    </Link>
+                  </div>
+                </Callout>
+                <br></br>
+              </>
+            )}
             <RoutesConfiguration />
             <ErrorComponent />
           </main>

@@ -1,0 +1,12 @@
+.query-guide-align {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.query-guide-align .left {
+    width: 75%;
+}
+.query-guide-align .right {
+    width: 25%;
+}
