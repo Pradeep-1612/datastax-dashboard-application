@@ -13,6 +13,8 @@ function QueryEditorBaseContainer() {
       <div className="query-guide-align">
         <div className="left">
           <QueryInputComponent />
+          <br></br>
+          {queryResult && <QueryOutputComponent />}
         </div>
         <div className="right">
           <br></br>
@@ -20,8 +22,6 @@ function QueryEditorBaseContainer() {
           <ToolsComponent />
         </div>
       </div>
-      <br></br>
-      {queryResult && <QueryOutputComponent />}
     </div>
   );
 }

@@ -11,7 +11,7 @@ const QueryOutputComponent: React.FC = () => {
   const queryExecutionTime = useSelector(selectQueryExecutionTime);
   const queryResult = useSelector(selectQueryResult);
   return (
-    <>
+    <div className="query-output-container">
       <h6>Results</h6>
       <br></br>
       <div>
@@ -31,7 +31,7 @@ const QueryOutputComponent: React.FC = () => {
           }}
         />
       </div>
-    </>
+    </div>
   );
 };
 
