@@ -2,16 +2,15 @@ import { coreActions } from "../../core/store/reducer";
 import type { AppDispatch } from "../../StoreConfiguration"
 import { queryEditorService } from "../services/query-editor.service";
 import { queryEditorActions } from "./reducer"
-const QUERY_HISTORY_KEY = "queryHistory";
+import { getQueryEditorStateValue, setQueryEditorStateValue } from "../../utilities/device-store";
 const MAX_QUERY_HISTORY = 20;
 
 function saveQueryToHistory(query: unknown, executionTime: number, success: boolean) {
-    const existing: { query: string; executionTime: number; lastRunAt: string; success: boolean }[] =
-        JSON.parse(localStorage.getItem(QUERY_HISTORY_KEY) ?? "[]");
+    const existing = getQueryEditorStateValue("queryHistory");
     const queryString = typeof query === "string" ? query : JSON.stringify(query, null, 2);
     const entry = { query: queryString, executionTime, lastRunAt: new Date().toISOString(), success };
     const updated = [...existing, entry].slice(-MAX_QUERY_HISTORY);
-    localStorage.setItem(QUERY_HISTORY_KEY, JSON.stringify(updated));
+    setQueryEditorStateValue("queryHistory", updated);
 }
 
 export const executeQuery = (query: unknown, signal?: AbortSignal) => {
@@ -28,7 +27,11 @@ export const executeQuery = (query: unknown, signal?: AbortSignal) => {
                 queryExecutionTime: fetchTime,
                 queryResult: result.data
             }));
-            saveQueryToHistory(query, fetchTime, true);
+            if (result?.data?.errors) {
+                saveQueryToHistory(query, fetchTime, false);
+            } else {
+                saveQueryToHistory(query, fetchTime, true);
+            }
         }
         catch (error) {
             if ((error as { name?: string }).name === "CanceledError") {

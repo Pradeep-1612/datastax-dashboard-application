@@ -2,22 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { CodeSnippet } from "@carbon/react";
 import { selectQueryExecutionTime } from "../store/reducer";
+import { getQueryHistory } from "../../utilities/device-store";
 import "./query-history.component.css";
-
-interface QueryHistoryEntry {
-  query: string;
-  executionTime: number;
-  lastRunAt: string;
-  success: boolean;
-}
-
-export const QUERY_HISTORY_KEY = "queryHistory";
 
 const QueryHistory: React.FC = () => {
   useSelector(selectQueryExecutionTime); // re-render when a query completes
 
-  const stored = localStorage.getItem(QUERY_HISTORY_KEY);
-  const history: QueryHistoryEntry[] = stored ? JSON.parse(stored) : [];
+  const history = getQueryHistory();
 
   if (history.length === 0) {
     return <p className="query-history-empty">No queries run yet.</p>;
