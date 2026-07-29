@@ -12,14 +12,14 @@ const QueryOutputComponent: React.FC = () => {
   const queryResult = useSelector(selectQueryResult);
   return (
     <div className="query-output-container">
-      <h6>Results</h6>
+      <div className="flex-between">
+        <h6>Results</h6>
+        <span className="result-summary__fetch-time">
+          Fetched in {(queryExecutionTime / 1000).toFixed(2)}s
+        </span>
+      </div>
       <br></br>
       <div>
-        <div className="flex mb-8">
-          <span className="result-summary__fetch-time">
-            Fetched in {(queryExecutionTime / 1000).toFixed(2)}s
-          </span>
-        </div>
         <Editor
           height="400px"
           defaultLanguage="json"
