@@ -1,6 +1,6 @@
-import type { AppDispatch } from "../../StoreConfiguration";
+import type { AppDispatch, RootState } from "../../StoreConfiguration";
 import { documentService } from "../services/document.service";
-import { documentsActions } from "./reducer";
+import { documentsActions, selectSearchQuery } from "./reducer";
 import { coreActions } from "../../core/store/reducer";
 
 export const fetchDocuments = (query: any, pageState?: string) => {
@@ -105,7 +105,7 @@ export const addDocument = (body: {}) => {
 }
 
 export const updateDocument = (id: string, body: any) => {
-    return async (dispatch: AppDispatch) => {
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
         dispatch(
             documentsActions.setUpdatePending(true)
         );
@@ -131,8 +131,8 @@ export const updateDocument = (id: string, body: any) => {
             dispatch(
                 documentsActions.updateDocumentSuccess()
             );
-            // Dispatch fetchDocuments to refresh the data
-            dispatch(fetchDocuments({ _id: id }));
+            // Dispatch fetchDocuments to refresh the data using the current query
+            dispatch(fetchDocuments(selectSearchQuery(getState())));
         } catch (error) {
             console.log(error);
             dispatch(
@@ -154,7 +154,7 @@ export const updateDocument = (id: string, body: any) => {
 }
 
 export const deleteDocument = (id: string) => {
-    return async (dispatch: AppDispatch) => {
+    return async (dispatch: AppDispatch, getState: () => RootState) => {
         dispatch(
             documentsActions.setDeletePending(true)
         );
@@ -176,8 +176,8 @@ export const deleteDocument = (id: string) => {
             dispatch(
                 documentsActions.setDeletePending(false)
             );
-            // Dispatch fetchDocuments to refresh the data
-            dispatch(fetchDocuments({ _id: id }));
+            // Dispatch fetchDocuments to refresh the data using the current query
+            dispatch(fetchDocuments(selectSearchQuery(getState())));
             // Dispatch success action to close the modal
             dispatch(
                 documentsActions.deleteDocumentSuccess()

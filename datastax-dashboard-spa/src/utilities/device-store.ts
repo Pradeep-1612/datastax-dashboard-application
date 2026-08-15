@@ -3,7 +3,7 @@ export interface QueryEditorState {
 }
 
 export function getQueryEditorStateKey(): string {
-    const configUrl = sessionStorage.getItem("config_url");
+    const configUrl = sessionStorage.getItem("config_url_keyspace");
     if (configUrl) {
         try {
             const { host } = new URL(configUrl);

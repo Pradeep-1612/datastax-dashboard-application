@@ -1,7 +1,7 @@
 import { createHttpClient } from "../../core/services/create-http-client.service";
 
-const queryEditorServiceClient = createHttpClient("/api/documents", undefined);
-
+const indexesServiceClient = createHttpClient(
+    "/api/documents", undefined);
 
 // Helper function to get configuration from sessionStorage
 const getRequestConfiguration = () => {
@@ -14,10 +14,8 @@ const getRequestConfiguration = () => {
         throw new Error('Configuration not found. Please configure URL, Collection, Header Name, and Header Value in the Configuration page.');
     }
 
-    const url = `${urlKeyspace.replace(/\/$/, '')}/${collection}`;
-
     return {
-        url,
+        url: urlKeyspace,
         headerName,
         headerValue
     };
@@ -33,8 +31,16 @@ const wrapRequestBody = (requestBody: any) => {
     };
 };
 
-export const queryEditorService = {
-    executeQuery(query: any, signal?: AbortSignal) {
-        return queryEditorServiceClient.post("", wrapRequestBody(query), { signal });
+export const indexesService = {
+    getIndexes() {
+        const requestBody = {
+            "findCollections": {
+                "options": {
+                    "explain": true
+                }
+            }
+        };
+
+        return indexesServiceClient.post("", wrapRequestBody(requestBody));
     }
 }

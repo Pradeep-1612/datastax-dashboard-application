@@ -12,7 +12,7 @@ function HomeContainer() {
   const dispatch = useDispatch<AppDispatch>();
   const [searchValue, setSearchValue] = useState("");
   const [quickLookupValue, setQuickLookupValue] = useState("");
-  const isConfigured = !!sessionStorage.getItem('config_url');
+  const isConfigured = !!sessionStorage.getItem('config_url_keyspace') && !!sessionStorage.getItem('config_collection');
 
   function onSearch(event: any) {
     const value = event.target.value;

@@ -16,7 +16,7 @@ import { executeQuery } from "../store/effects";
 import type { AppDispatch } from "../../StoreConfiguration";
 
 const QueryInputComponent: React.FC = () => {
-  const isConfigured = !!sessionStorage.getItem("config_url");
+  const isConfigured = !!sessionStorage.getItem("config_url_keyspace") && !!sessionStorage.getItem("config_collection");
   const dispatch = useDispatch<AppDispatch>();
   const isQueryRunning = useSelector(selectQueryExecuting);
   const jsonContent = useSelector(selectQueryInput);

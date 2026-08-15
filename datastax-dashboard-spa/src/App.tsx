@@ -24,7 +24,9 @@ function App() {
   });
   const navigate = useNavigate();
 
-  const isConfigured = !!sessionStorage.getItem("config_url");
+  const isConfigured =
+    !!sessionStorage.getItem("config_url_keyspace") &&
+    !!sessionStorage.getItem("config_collection");
 
   const handleWelcomeAccept = () => {
     setIsWelcomeAccepted(true);
@@ -56,7 +58,7 @@ function App() {
                   lowContrast
                 >
                   <div className="cds--inline-notification__subtitle">
-                    No database endpoint has been configured.
+                    No database endpoint has been configured.{" "}
                     <Link onClick={handleNavigation("/configurations")}>
                       Configure now.
                     </Link>

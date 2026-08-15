@@ -4,7 +4,8 @@ import { useState } from "react";
 import "./configurations-home.container.css";
 
 interface ConfigurationFormData {
-  url: string;
+  urlKeyspace: string;
+  collection: string;
   headerName: string;
   headerValue: string;
 }
@@ -14,13 +15,15 @@ function ConfigurationsHomeContainer() {
 
   const form = useForm({
     defaultValues: {
-      url: sessionStorage.getItem("config_url") || "",
+      urlKeyspace: sessionStorage.getItem("config_url_keyspace") || "",
+      collection: sessionStorage.getItem("config_collection") || "",
       headerName: sessionStorage.getItem("config_headerName") || "",
       headerValue: sessionStorage.getItem("config_headerValue") || "",
     },
     onSubmit: async ({ value }) => {
       // Save to SessionStorage
-      sessionStorage.setItem("config_url", value.url);
+      sessionStorage.setItem("config_url_keyspace", value.urlKeyspace);
+      sessionStorage.setItem("config_collection", value.collection);
       sessionStorage.setItem("config_headerName", value.headerName);
       sessionStorage.setItem("config_headerValue", value.headerValue);
 
@@ -66,18 +69,39 @@ function ConfigurationsHomeContainer() {
         }}
       >
         <Stack gap={6}>
-          {/* URL Field */}
+          {/* URL Keyspace Field */}
           <form.Field
-            name="url"
+            name="urlKeyspace"
             validators={{
               onChange: validateUrl,
             }}
           >
             {(field) => (
               <TextInput
-                id="url"
-                labelText="URL"
-                placeholder="https://example.com"
+                id="urlKeyspace"
+                labelText="URL (up to keyspace)"
+                placeholder="http://example.com:8181/v1/keyspace"
+                value={field.state.value}
+                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={field.handleBlur}
+                invalid={field.state.meta.errors.length > 0}
+                invalidText={field.state.meta.errors[0] as string}
+              />
+            )}
+          </form.Field>
+
+          {/* Collection Field */}
+          <form.Field
+            name="collection"
+            validators={{
+              onChange: validateRequired("Collection"),
+            }}
+          >
+            {(field) => (
+              <TextInput
+                id="collection"
+                labelText="Collection name"
+                placeholder="collection"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={field.handleBlur}

@@ -5,13 +5,16 @@ const documentServiceClient = createHttpClient(
 
 // Helper function to get configuration from sessionStorage
 const getRequestConfiguration = () => {
-    const url = sessionStorage.getItem('config_url') || '';
+    const urlKeyspace = sessionStorage.getItem('config_url_keyspace') || '';
+    const collection = sessionStorage.getItem('config_collection') || '';
     const headerName = sessionStorage.getItem('config_headerName') || '';
     const headerValue = sessionStorage.getItem('config_headerValue') || '';
 
-    if (!url || !headerName || !headerValue) {
-        throw new Error('Configuration not found. Please configure URL, Header Name, and Header Value in the Configuration page.');
+    if (!urlKeyspace || !collection || !headerName || !headerValue) {
+        throw new Error('Configuration not found. Please configure URL, Collection, Header Name, and Header Value in the Configuration page.');
     }
+
+    const url = `${urlKeyspace.replace(/\/$/, '')}/${collection}`;
 
     return {
         url,
