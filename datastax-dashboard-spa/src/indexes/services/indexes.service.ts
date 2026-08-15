@@ -6,13 +6,8 @@ const indexesServiceClient = createHttpClient(
 // Helper function to get configuration from sessionStorage
 const getRequestConfiguration = () => {
     const urlKeyspace = sessionStorage.getItem('config_url_keyspace') || '';
-    const collection = sessionStorage.getItem('config_collection') || '';
     const headerName = sessionStorage.getItem('config_headerName') || '';
     const headerValue = sessionStorage.getItem('config_headerValue') || '';
-
-    if (!urlKeyspace || !collection || !headerName || !headerValue) {
-        throw new Error('Configuration not found. Please configure URL, Collection, Header Name, and Header Value in the Configuration page.');
-    }
 
     return {
         url: urlKeyspace,
@@ -22,7 +17,7 @@ const getRequestConfiguration = () => {
 };
 
 // Helper function to wrap request body with configuration
-const wrapRequestBody = (requestBody: any) => {
+const wrapRequestBody = (requestBody: object) => {
     const requestConfigurationDetails = getRequestConfiguration();
 
     return {

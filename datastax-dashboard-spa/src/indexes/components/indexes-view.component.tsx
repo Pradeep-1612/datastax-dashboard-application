@@ -11,10 +11,12 @@ const IndexesViewComponent: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isFetching = useSelector(selectFetchingIndexes);
   const indexes = useSelector(selectIndexes);
+  const isConfigured = !!sessionStorage.getItem('config_url_keyspace') && !!sessionStorage.getItem('config_collection');
 
   useEffect(() => {
+    if (!isConfigured) return;
     dispatch(indexesEffects.getIndexes());
-  }, [dispatch]);
+  }, [dispatch, isConfigured]);
 
   const editorValue = JSON.stringify(indexes, null, 2);
 
