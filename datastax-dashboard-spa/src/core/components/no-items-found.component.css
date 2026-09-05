@@ -1,0 +1,13 @@
+.no-items-found {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 350px);
+  justify-content: center;
+  width: 100%;
+}
+
+.no-items-found__icon {
+  height: 400px;
+  width: 400px;
+}

@@ -1,13 +1,18 @@
 import { SideNav, SideNavItems, SideNavLink } from "@carbon/react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSharedLinkParams } from "../../utilities/use-shared-link-params";
 
 function SideNavContainer() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Re-reads sessionStorage on mount; produces "?environment=…&state=…" or ""
+  // when config is incomplete (no environment or headerValue saved yet).
+  const sharedLinkParams = useSharedLinkParams();
+
   const handleNavigation = (path: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    navigate(path);
+    navigate(sharedLinkParams ? `${path}${sharedLinkParams}` : path);
   };
 
   return (
@@ -52,4 +57,5 @@ function SideNavContainer() {
     </>
   );
 }
+
 export default SideNavContainer;

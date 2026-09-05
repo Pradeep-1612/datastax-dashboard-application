@@ -24,6 +24,7 @@ import {
 } from "../store/reducer";
 import { fetchDocuments } from "../store/effects";
 import type { AppDispatch } from "../../StoreConfiguration";
+import EmptyState from "../../core/components/empty-state.component";
 import NoItemsFound from "../../core/components/no-items-found.component";
 import UpdateDocumentComponent from "../components/update-document.component";
 import DeleteDocumentComponent from "../components/delete-document.component";
@@ -92,9 +93,9 @@ const DocumentTableContainer: React.FC = () => {
     dispatch(fetchDocuments(searchQuery, prevPageState));
   };
 
-  // Show message if no documents after fetching
+  // Show the initial empty state before any search action
   if (!searchQuery || Object.keys(searchQuery).length === 0) {
-    return;
+    return <EmptyState />;
   }
 
   // Show skeleton while fetching
@@ -119,11 +120,8 @@ const DocumentTableContainer: React.FC = () => {
     );
   }
 
-  // Show message if no documents after fetching
-  // Only show NoItemsFound if we have documents array (even if empty) and it's actually empty
+  // Show the no-results state after a search returns no documents
   if (
-    searchQuery &&
-    Object.keys(searchQuery).length !== 0 &&
     !fetching &&
     documents &&
     documents.length === 0

@@ -8,3 +8,23 @@ h1 {
     display: flex;
     gap: 24px;
 }
+
+.share-link-callout {
+    border-left: 3px solid #24a148;
+    padding: 1rem 1rem 1rem 1.25rem;
+    background: #ffffff;
+}
+
+.share-link-callout-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #161616;
+    margin-bottom: 0.5rem;
+}
+
+.share-link-hint {
+    font-size: 0.875rem;
+    color: #525252;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}

@@ -102,3 +102,7 @@
 .bs-light {
   box-shadow: 0 1px 4px #0000001a;
 }
+
+.faded-text {
+  color: #525252;
+}

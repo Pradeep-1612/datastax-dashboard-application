@@ -97,6 +97,60 @@ set PORT=8080 && DataOnTheHouse-win.exe
 
 ---
 
+## Upgrading — remove the previous version first
+
+Before running a new release, find and delete the old binary from your system.
+
+### macOS
+
+**1. Search for it in common locations:**
+```bash
+ls ~/Downloads/DataOnTheHouse-macos ~/Desktop/DataOnTheHouse-macos 2>/dev/null
+```
+
+**2. Remove whichever path was found:**
+```bash
+rm ~/Downloads/DataOnTheHouse-macos
+# or
+rm ~/Desktop/DataOnTheHouse-macos
+```
+
+---
+
+### Linux
+
+**1. Search for it in common locations:**
+```bash
+ls ~/Downloads/DataOnTheHouse-linux ~/Desktop/DataOnTheHouse-linux 2>/dev/null
+```
+
+**2. Remove whichever path was found:**
+```bash
+rm ~/Downloads/DataOnTheHouse-linux
+# or
+rm ~/Desktop/DataOnTheHouse-linux
+```
+
+---
+
+### Windows
+
+**1. Search for it in common locations:**
+```cmd
+dir /b "%USERPROFILE%\Downloads\DataOnTheHouse-win.exe" "%USERPROFILE%\Desktop\DataOnTheHouse-win.exe" 2>nul
+```
+
+**2. Remove whichever path was found:**
+```cmd
+del "%USERPROFILE%\Downloads\DataOnTheHouse-win.exe"
+:: or
+del "%USERPROFILE%\Desktop\DataOnTheHouse-win.exe"
+```
+
+Then download the new release file and follow **Step 2** again.
+
+---
+
 ## Troubleshooting
 
 **"Port already in use" error**
