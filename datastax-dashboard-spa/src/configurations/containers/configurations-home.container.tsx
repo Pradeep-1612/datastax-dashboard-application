@@ -8,6 +8,7 @@ import {
   SelectItem,
   CodeSnippet,
 } from "@carbon/react";
+import { MagicWand } from "@carbon/icons-react";
 import { useState, useEffect } from "react";
 import { encryptState } from "../../utilities/shared-link-crypto";
 import "./configurations-home.container.css";
@@ -296,7 +297,11 @@ function ConfigurationsHomeContainer() {
           {/* Shareable link — only after Save when env + headerValue are set */}
           {savedConfig.environment && savedConfig.headerValue && shareLink && (
             <div className="share-link-callout">
-              <p className="share-link-callout-title">Direct access link</p>
+              <p className="share-link-callout-title">
+                <MagicWand size={16} />
+                Direct access link
+              </p>
+              <br></br>
               <p className="share-link-hint">
                 Use the link below to access the{" "}
                 <strong>{savedConfig.environment}</strong> environment directly.

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { TextInput, Button, InlineNotification } from "@carbon/react";
+import { Button, InlineNotification, TextInput, Tooltip } from "@carbon/react";
+import { Information } from "@carbon/icons-react";
 import { decryptState } from "../../utilities/shared-link-crypto";
 import "./shared-link-unlock.container.css";
 
@@ -53,14 +54,10 @@ function SharedLinkUnlockContainer({
       <div className="unlock-background"></div>
       <div className="unlock-content">
         <h1 className="unlock-title">
-          Welcome to <strong>Data on the house</strong>
+          Welcome back!
         </h1>
         <br></br>
         <br></br>
-
-        <p className="unlock-message">
-          We're excited to have you here! This application is designed to help you manage and visualize your data efficiently.
-        </p>
         <br></br>
         <br></br>
 
@@ -69,12 +66,25 @@ function SharedLinkUnlockContainer({
         </p>
         <br></br>
         <br></br>
+        <br></br>
 
         <div className="unlock-form">
           <TextInput
             id="unlock-password"
             type="password"
-            labelText="Header value / password"
+            labelText={
+              <span className="unlock-label">
+                Header value / password
+                <Tooltip
+                  label="Enter the header value or password you provided when configuring this direct access link."
+                  align="right"
+                >
+                  <span className="unlock-tooltip-icon">
+                    <Information size={16} />
+                  </span>
+                </Tooltip>
+              </span>
+            }
             placeholder="Enter the Header value or password"
             value={password}
             onChange={(e) => {
@@ -115,13 +125,8 @@ function SharedLinkUnlockContainer({
         <br></br>
         <br></br>
         <div className="privacy-message">
-          <p className="privacy-message-header">Your privacy matters:</p>
-          • Everything you do in this application stays on your device.
-          <br />
-          • We do not have access to any data, settings, or configurations you
-          create.
-          <br />• All of your information remains private, secure, and under
-          your control at all times.
+          <p className="privacy-message-header">Your privacy matters</p>
+          Your data, settings, and configurations stay on your device and remain under your control.
         </div>
       </div>
     </div>

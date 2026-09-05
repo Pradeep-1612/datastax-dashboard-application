@@ -41,7 +41,7 @@
 }
 
 .unlock-content {
-  width: 55%;
+  width: 50%;
   padding: 3rem;
   border-radius: 8px;
   text-align: center;
@@ -84,12 +84,24 @@
 }
 
 .unlock-form {
-  width: 60%;
+  width: 45%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   text-align: left;
+}
+
+.unlock-label {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.unlock-tooltip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .unlock-button {
