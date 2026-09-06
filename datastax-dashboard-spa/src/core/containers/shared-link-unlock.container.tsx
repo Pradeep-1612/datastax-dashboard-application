@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Button, InlineNotification, TextInput, Tooltip } from "@carbon/react";
+import { Button, InlineNotification, Link, TextInput, Tooltip } from "@carbon/react";
 import { Information } from "@carbon/icons-react";
+import { useNavigate } from "react-router-dom";
 import { decryptState } from "../../utilities/shared-link-crypto";
+import AppVersionComponent from "../components/app-version.component";
 import "./shared-link-unlock.container.css";
 
 interface SharedLinkUnlockContainerProps {
@@ -18,9 +20,15 @@ function SharedLinkUnlockContainer({
   environment,
   onUnlocked,
 }: SharedLinkUnlockContainerProps) {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleStartFresh = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate("/configurations");
+  };
 
   const handleSignIn = async () => {
     if (!password.trim()) return;
@@ -63,6 +71,9 @@ function SharedLinkUnlockContainer({
 
         <p className="unlock-subtitle">
           You're now accessing the <strong>{environment}</strong> environment.
+        </p>
+        <p className="unlock-start-fresh">
+          Need a fresh start? <Link onClick={handleStartFresh}>Set up again</Link>
         </p>
         <br></br>
         <br></br>
@@ -128,6 +139,9 @@ function SharedLinkUnlockContainer({
           <p className="privacy-message-header">Your privacy matters</p>
           Your data, settings, and configurations stay on your device and remain under your control.
         </div>
+      </div>
+      <div className="unlock-app-version">
+        <AppVersionComponent />
       </div>
     </div>
   );

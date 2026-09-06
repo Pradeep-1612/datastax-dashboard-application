@@ -1,6 +1,7 @@
 import { SideNav, SideNavItems, SideNavLink } from "@carbon/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSharedLinkParams } from "../../utilities/use-shared-link-params";
+import AppVersionComponent from "../components/app-version.component";
 
 function SideNavContainer() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function SideNavContainer() {
             Indexes
           </SideNavLink>
         </SideNavItems>
+        <AppVersionComponent />
       </SideNav>
     </>
   );

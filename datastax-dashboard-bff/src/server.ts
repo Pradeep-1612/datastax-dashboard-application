@@ -18,6 +18,11 @@ app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'ok' });
 });
 
+// Version endpoint
+app.get('/api/version', (_req: Request, res: Response) => {
+  res.status(200).json({ version, releaseDate: releaseDate ?? null });
+});
+
 // Determine the correct path for React static files
 // When packaged with pkg, __dirname points to the snapshot filesystem
 // The assets are included relative to the project root in the snapshot

@@ -1,0 +1,46 @@
+.app-version {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #393939;
+  background-color: #161616;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 0.75rem;
+}
+
+.app-version__label {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: #6f6f6f;
+  text-transform: uppercase;
+}
+
+.app-version__value {
+  font-size: 10px;
+  color: #c6c6c6;
+  font-weight: 500;
+}
+
+.app-version__release {
+  font-size: 10px;
+  color: #6f6f6f;
+}
+
+.app-version__download {
+  font-size: 11px;
+  color: #78a9ff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.app-version__download:hover {
+  text-decoration: underline;
+  color: #a6c8ff;
+}

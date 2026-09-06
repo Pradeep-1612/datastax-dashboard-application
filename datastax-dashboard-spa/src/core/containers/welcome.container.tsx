@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Checkbox, Button } from "@carbon/react";
+import AppVersionComponent from "../components/app-version.component";
 import "./welcome.container.css";
 
 interface WelcomeContainerProps {
@@ -67,6 +68,9 @@ function WelcomeContainer({ onAccept }: WelcomeContainerProps) {
             Get started
           </Button>
         </div>
+      </div>
+      <div className="welcome-app-version">
+        <AppVersionComponent />
       </div>
     </div>
   );
