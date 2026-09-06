@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, InlineNotification, Link, TextInput, Tooltip } from "@carbon/react";
+import { Button, Link, TextInput, Tooltip } from "@carbon/react";
 import { Information } from "@carbon/icons-react";
 import { useNavigate } from "react-router-dom";
 import { decryptState } from "../../utilities/shared-link-crypto";
@@ -51,7 +51,7 @@ function SharedLinkUnlockContainer({
 
       onUnlocked();
     } catch {
-      setError("Incorrect header value or password. Please try again.");
+      setError("Incorrect password. Please try again.");
     } finally {
       setIsSigningIn(false);
     }
@@ -85,9 +85,9 @@ function SharedLinkUnlockContainer({
             type="password"
             labelText={
               <span className="unlock-label">
-                Header value / password
+                Password
                 <Tooltip
-                  label="Enter the header value or password you provided when configuring this direct access link."
+                  label="Enter the password you provided when configuring this direct access link."
                   align="right"
                 >
                   <span className="unlock-tooltip-icon">
@@ -96,7 +96,7 @@ function SharedLinkUnlockContainer({
                 </Tooltip>
               </span>
             }
-            placeholder="Enter the Header value or password"
+            placeholder="Enter the password"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
@@ -108,16 +108,6 @@ function SharedLinkUnlockContainer({
             invalid={!!error}
             invalidText={error ?? undefined}
           />
-
-          {error && (
-            <InlineNotification
-              kind="error"
-              title="Sign-in failed"
-              subtitle={error}
-              lowContrast
-              hideCloseButton
-            />
-          )}
 
           <br></br>
 

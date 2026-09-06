@@ -233,8 +233,8 @@ function ConfigurationsHomeContainer() {
               {(field) => (
                 <TextInput
                   id="headerName"
-                  labelText="Header name"
-                  placeholder="e.g., Authorization"
+                  labelText="Username"
+                  placeholder="e.g., Token"
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={field.handleBlur}
@@ -253,8 +253,8 @@ function ConfigurationsHomeContainer() {
                 <TextInput
                   id="headerValue"
                   type="password"
-                  labelText="Header value"
-                  placeholder="e.g., Bearer token123"
+                  labelText="Password"
+                  placeholder="e.g., Cassandra123"
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={field.handleBlur}
@@ -305,7 +305,7 @@ function ConfigurationsHomeContainer() {
               <p className="share-link-hint">
                 Use the link below to access the{" "}
                 <strong>{savedConfig.environment}</strong> environment directly.
-                You'll be prompted to enter the header value or password to sign in.
+                You'll be prompted to enter the password to sign in.
                 Copy and save this link for quick access later.
               </p>
               <CodeSnippet
