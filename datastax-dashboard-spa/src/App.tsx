@@ -18,14 +18,20 @@ loader.init().then(monacoBeforeMount);
 
 function App() {
   const [searchParams] = useSearchParams();
-  const encodedState = searchParams.get("state");
   const environment = searchParams.get("environment") ?? "";
+  const urlKeyspace = searchParams.get("keyspace") ?? "";
+  const collection = searchParams.get("collection") ?? "";
+  const headerName = searchParams.get("username") ?? "";
+  const keyParam = searchParams.get("key") ?? "";
+
+  // A shared link carries at minimum `environment` + `keyspace` + `key` in the URL.
+  const isSharedLink = !!(environment && urlKeyspace && keyParam);
 
   // True when the user arrived via a shared link that hasn't been unlocked yet.
   // If config_headerValue is already in sessionStorage the user already unlocked
   // this session (e.g. they refreshed the page) — skip the unlock screen.
   const [needsUnlock, setNeedsUnlock] = useState<boolean>(
-    () => !!encodedState && !sessionStorage.getItem("config_headerValue"),
+    () => isSharedLink && !sessionStorage.getItem("config_headerValue"),
   );
 
   const [isWelcomeAccepted, setIsWelcomeAccepted] = useState(() => {
@@ -64,11 +70,14 @@ function App() {
           <HeaderContainer />
           <WelcomeContainer onAccept={handleWelcomeAccept} />
         </>
-      ) : needsUnlock && encodedState ? (
+      ) : needsUnlock && isSharedLink ? (
         <>
           <HeaderContainer />
           <SharedLinkUnlockContainer
-            encodedState={encodedState}
+            urlKeyspace={urlKeyspace}
+            collection={collection}
+            headerName={headerName}
+            keyParam={keyParam}
             environment={environment}
             onUnlocked={handleUnlocked}
           />

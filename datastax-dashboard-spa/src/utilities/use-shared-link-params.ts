@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
-import { encryptState } from "./shared-link-crypto";
+import { buildKeyParam } from "./shared-link-crypto";
 
 /**
  * Reads the current configuration from sessionStorage and, when both
- * `config_environment` and `config_headerValue` are set, asynchronously
- * produces the `?environment=<env>&state=<encrypted>` query string.
+ * `config_environment` and `config_headerValue` are set, produces the
+ * `?environment=<env>&keyspace=<url>&collection=<col>&username=<name>&key=<blob>`
+ * query string.
  *
- * Returns an empty string when the configuration is incomplete (no environment
- * or no headerValue) — callers should treat that as "no params to append".
+ * The `key` param is an AES-GCM blob derived from the keyspace hostname +
+ * last path segment, encrypted with the password. It lets the unlock screen
+ * verify the password client-side without a network call.
+ *
+ * Returns an empty string when the configuration is incomplete — callers
+ * should treat that as "no params to append".
  *
  * Re-runs whenever the `refreshKey` argument changes, allowing callers to
  * trigger a fresh generation (e.g. after Save).
@@ -16,34 +21,30 @@ export function useSharedLinkParams(refreshKey?: unknown): string {
   const [params, setParams] = useState("");
 
   useEffect(() => {
+    const environment = sessionStorage.getItem("config_environment") || "";
+    const headerValue = sessionStorage.getItem("config_headerValue") || "";
+    const urlKeyspace = sessionStorage.getItem("config_url_keyspace") || "";
+    const collection = sessionStorage.getItem("config_collection") || "";
+    const headerName = sessionStorage.getItem("config_headerName") || "";
+
+    if (!environment || !headerValue) {
+      setParams("");
+      return;
+    }
+
     let cancelled = false;
 
-    const run = async () => {
-      const environment = sessionStorage.getItem("config_environment") || "";
-      const headerValue = sessionStorage.getItem("config_headerValue") || "";
-      const urlKeyspace = sessionStorage.getItem("config_url_keyspace") || "";
-      const collection = sessionStorage.getItem("config_collection") || "";
-      const headerName = sessionStorage.getItem("config_headerName") || "";
-
-      if (!environment || !headerValue) {
-        setParams("");
-        return;
-      }
-
-      try {
-        const encryptedState = await encryptState(
-          { urlKeyspace, collection, headerName },
-          headerValue,
+    buildKeyParam(urlKeyspace, headerValue).then((keyParam) => {
+      if (!cancelled) {
+        setParams(
+          `?environment=${encodeURIComponent(environment)}` +
+            `&keyspace=${encodeURIComponent(urlKeyspace)}` +
+            `&collection=${encodeURIComponent(collection)}` +
+            `&username=${encodeURIComponent(headerName)}` +
+            `&key=${keyParam}`,
         );
-        if (!cancelled) {
-          setParams(`?environment=${environment}&state=${encryptedState}`);
-        }
-      } catch {
-        if (!cancelled) setParams("");
       }
-    };
-
-    run();
+    });
 
     return () => {
       cancelled = true;

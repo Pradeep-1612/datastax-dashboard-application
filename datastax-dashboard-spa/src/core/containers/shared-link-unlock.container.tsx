@@ -2,21 +2,30 @@ import { useState } from "react";
 import { Button, Link, TextInput, Tooltip } from "@carbon/react";
 import { Information } from "@carbon/icons-react";
 import { useNavigate } from "react-router-dom";
-import { decryptState } from "../../utilities/shared-link-crypto";
+import { verifyKeyParam } from "../../utilities/shared-link-crypto";
 import AppVersionComponent from "../components/app-version.component";
 import "./shared-link-unlock.container.css";
 
 interface SharedLinkUnlockContainerProps {
-  /** The raw base64url `state` param from the URL */
-  encodedState: string;
-  /** The environment label from the URL (kept in URL; shown to the user) */
+  /** The keyspace URL from the URL param */
+  urlKeyspace: string;
+  /** The collection name from the URL param */
+  collection: string;
+  /** The auth header name (username) from the URL param */
+  headerName: string;
+  /** The AES-GCM blob used to verify the password client-side */
+  keyParam: string;
+  /** The environment label from the URL (shown to the user) */
   environment: string;
-  /** Called after credentials are verified and configuration is written to sessionStorage */
+  /** Called after the password is verified and configuration is written to sessionStorage */
   onUnlocked: () => void;
 }
 
 function SharedLinkUnlockContainer({
-  encodedState,
+  urlKeyspace,
+  collection,
+  headerName,
+  keyParam,
   environment,
   onUnlocked,
 }: SharedLinkUnlockContainerProps) {
@@ -37,14 +46,18 @@ function SharedLinkUnlockContainer({
     setError(null);
 
     try {
-      const payload = await decryptState(encodedState, password.trim());
+      // Verify the password client-side — no network call needed.
+      // verifyKeyParam decrypts the `key` URL param with the entered password
+      // and checks it matches the hostname:lastSegment derived from keyspace.
+      // AES-GCM throws if the password is wrong.
+      await verifyKeyParam(keyParam, urlKeyspace, password.trim());
 
-      if (payload.urlKeyspace)
-        sessionStorage.setItem("config_url_keyspace", payload.urlKeyspace);
-      if (payload.collection)
-        sessionStorage.setItem("config_collection", payload.collection);
-      if (payload.headerName)
-        sessionStorage.setItem("config_headerName", payload.headerName);
+      if (urlKeyspace)
+        sessionStorage.setItem("config_url_keyspace", urlKeyspace);
+      if (collection)
+        sessionStorage.setItem("config_collection", collection);
+      if (headerName)
+        sessionStorage.setItem("config_headerName", headerName);
       sessionStorage.setItem("config_headerValue", password.trim());
       if (environment)
         sessionStorage.setItem("config_environment", environment);

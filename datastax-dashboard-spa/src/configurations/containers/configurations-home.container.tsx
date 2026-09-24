@@ -10,7 +10,7 @@ import {
 } from "@carbon/react";
 import { MagicWand } from "@carbon/icons-react";
 import { useState, useEffect } from "react";
-import { encryptState } from "../../utilities/shared-link-crypto";
+import { buildKeyParam } from "../../utilities/shared-link-crypto";
 import "./configurations-home.container.css";
 
 // The SPA path prefix used in shareable links
@@ -94,32 +94,31 @@ function ConfigurationsHomeContainer() {
    * Runs only when savedConfig changes — i.e. only after the user clicks Save.
    */
   useEffect(() => {
+    const { urlKeyspace, collection, headerName, headerValue, environment } =
+      savedConfig;
+
+    if (!environment || !headerValue) {
+      setShareLink("");
+      if (window.location.search) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+      return;
+    }
+
     let cancelled = false;
 
-    const run = async () => {
-      const { urlKeyspace, collection, headerName, headerValue, environment } =
-        savedConfig;
-
-      if (!environment || !headerValue) {
-        setShareLink("");
-        if (window.location.search) {
-          window.history.replaceState(null, "", window.location.pathname);
-        }
-        return;
-      }
-
-      const encryptedState = await encryptState(
-        { urlKeyspace, collection, headerName },
-        headerValue,
-      );
+    buildKeyParam(urlKeyspace, headerValue).then((keyParam) => {
       if (cancelled) return;
 
-      const params = `?environment=${environment}&state=${encryptedState}`;
-      setShareLink(
-        `${window.location.origin}${SHARE_PATH_PREFIX}${params}`,
-      );
+      const params =
+        `?environment=${encodeURIComponent(environment)}` +
+        `&keyspace=${encodeURIComponent(urlKeyspace)}` +
+        `&collection=${encodeURIComponent(collection)}` +
+        `&username=${encodeURIComponent(headerName)}` +
+        `&key=${keyParam}`;
 
-      // Keep the browser URL in sync without adding a history entry
+      setShareLink(`${window.location.origin}${SHARE_PATH_PREFIX}${params}`);
+
       if (window.location.search !== params) {
         window.history.replaceState(
           null,
@@ -127,9 +126,7 @@ function ConfigurationsHomeContainer() {
           `${window.location.pathname}${params}`,
         );
       }
-    };
-
-    run();
+    });
 
     return () => {
       cancelled = true;

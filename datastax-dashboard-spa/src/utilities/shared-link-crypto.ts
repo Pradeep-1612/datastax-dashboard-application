@@ -94,3 +94,50 @@ export async function decryptState(
 
   return JSON.parse(dec.decode(plaintext)) as Record<string, string>;
 }
+
+// ---------------------------------------------------------------------------
+// Key-param helpers — password verification without network calls
+// ---------------------------------------------------------------------------
+
+/**
+ * Extracts the verification string from a keyspace URL.
+ * Format: "<hostname>:<lastPathSegment>"
+ * e.g. "https://hcd-platform-hub-np.wdc04.fs.local/ah-nonprod-dataapi/v1/scbn_pprod1"
+ *   →  "hcd-platform-hub-np.wdc04.fs.local:scbn_pprod1"
+ */
+function keyPlaintextFromKeyspace(urlKeyspace: string): string {
+  const parsed = new URL(urlKeyspace);
+  const lastSegment = parsed.pathname.split("/").filter(Boolean).at(-1) ?? "";
+  return `${parsed.hostname}:${lastSegment}`;
+}
+
+/**
+ * Encrypts the derived verification string using the password as the key.
+ * The result is suitable for use as the `&key=` URL parameter.
+ */
+export async function buildKeyParam(
+  urlKeyspace: string,
+  password: string,
+): Promise<string> {
+  const plaintext = keyPlaintextFromKeyspace(urlKeyspace);
+  return encryptState({ _k: plaintext }, password);
+}
+
+/**
+ * Decrypts the `&key=` param with the supplied password and verifies that
+ * the recovered plaintext matches the keyspace URL.
+ *
+ * Throws if the password is wrong (AES-GCM auth failure) or the plaintext
+ * doesn't match (tampered URL).
+ */
+export async function verifyKeyParam(
+  keyParam: string,
+  urlKeyspace: string,
+  password: string,
+): Promise<void> {
+  const payload = await decryptState(keyParam, password);
+  const expected = keyPlaintextFromKeyspace(urlKeyspace);
+  if (payload._k !== expected) {
+    throw new Error("Key mismatch");
+  }
+}
